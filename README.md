@@ -42,7 +42,7 @@ The application allows products, customers and orders to be stored in a relation
 
 ### Requirements
 
-- .NET 9 SDK
+- .NET 9.0.100-rc.2
 - Entity Framework Core CLI tools
 
 ### Setup
@@ -161,11 +161,9 @@ The applied unit price and discount are stored with each order item. This ensure
 
 HTML was selected as the invoice document format because it can be generated without additional dependencies and can be opened directly in a web browser.
 
-### Hazardous / fragile products
+### Hazardous products
 
-The provided data model contains an `IsHazardous` property, while the task description refers to specially marking fragile products.
-
-The implementation uses the provided `IsHazardous` property and marks these products as `HAZARDOUS` on the generated invoice.
+The implementation uses the provided `IsHazardous` property and marks hazardous products as `HAZARDOUS` on the generated invoice.
 
 Discount-eligible products are marked as `DISCOUNTED`.
 
