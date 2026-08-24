@@ -2,6 +2,8 @@
 GET {{InvoiceSystem_HostAddress}}/weatherforecast/
 Accept: application/json
 
+/* Get & create products */
+
 ### Get all products
 GET {{InvoiceSystem_HostAddress}}/api/products
 Accept: application/json
@@ -31,3 +33,33 @@ Content-Type: application/json
     "isHazardous": true,
     "isDiscountEligible": true
 }
+
+/* Get & create customers */
+
+### Get all customers
+
+GET {{InvoiceSystem_HostAddress}}/api/customers
+Accept: application/json
+
+### Create customer - Lando Norris
+
+POST {{InvoiceSystem_HostAddress}}/api/customers
+Content-Type: application/json
+
+{
+    "name": "Lando Norris",
+    "country": "United Kingdom",
+    "address": "M14 6QL Manchester, 27 Maplewood Road"
+}
+
+### Create customer - Henry Cavill
+
+POST {{InvoiceSystem_HostAddress}}/api/customers
+Content-Type: application/json
+
+{
+    "name": "Henry Cavill",
+    "country": "United Kingdom",
+    "address": "B15 2TT Birmingham, 42 Oakfield Road"
+}
+
