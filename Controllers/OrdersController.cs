@@ -3,6 +3,7 @@ namespace InvoiceSystem.Controllers;
 using InvoiceSystem.Data;
 using InvoiceSystem.DTOs;
 using InvoiceSystem.Models;
+using InvoiceSystem.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,10 +12,12 @@ using Microsoft.EntityFrameworkCore;
 public class OrdersController : ControllerBase
 {
     private readonly DBContext _context;
+    private readonly InvoiceService _invoiceService;
 
-    public OrdersController(DBContext context)
+    public OrdersController(DBContext context, InvoiceService invoiceService)
     {
         _context = context;
+        _invoiceService = invoiceService;
     }
 
     //GET /api/orders
@@ -90,5 +93,24 @@ public class OrdersController : ControllerBase
             new { id = order.Id },
             order
         );
+    }
+
+    [HttpGet("{id}/invoice")]
+    public async Task<IActionResult> GetInvoice(int id)
+    {
+        var order = await _context.Orders
+            .Include(o => o.Customer)
+            .Include(o => o.Items)
+                .ThenInclude(i => i.Product)
+            .FirstOrDefaultAsync(o => o.Id == id);
+
+        if (order == null)
+        {
+            return NotFound("Order not found");
+        }
+
+        var html = _invoiceService.GenerateInvoiceHtml(order);
+
+        return Content(html, "text/html");
     }
 }

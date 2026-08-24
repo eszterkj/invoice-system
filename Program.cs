@@ -1,4 +1,5 @@
 using InvoiceSystem.Data;
+using InvoiceSystem.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 builder.Services.AddDbContext<DBContext>(options => options.UseSqlite("Data Source=invoice.db"));
 builder.Services.AddControllers();
+builder.Services.AddScoped<InvoiceService>();
 
 var app = builder.Build();
 

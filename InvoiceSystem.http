@@ -105,3 +105,6 @@ Content-Type: application/json
         }
     ]
 }
+
+### Generate invoice for order 2
+GET {{InvoiceSystem_HostAddress}}/api/orders/2/invoice
