@@ -1,6 +1,33 @@
 @InvoiceSystem_HostAddress = http://localhost:5270
-
 GET {{InvoiceSystem_HostAddress}}/weatherforecast/
 Accept: application/json
 
-###
+### Get all products
+GET {{InvoiceSystem_HostAddress}}/api/products
+Accept: application/json
+
+### Create Herend trophy
+
+POST {{InvoiceSystem_HostAddress}}/api/products
+Content-Type: application/json
+
+{
+    "name": "Herend Trophy for Formula 1",
+    "category": "Trophy",
+    "unitPrice": 15000000,
+    "isHazardous": true,
+    "isDiscountEligible": false
+}
+
+### Create IKEA glass bottle
+
+POST {{InvoiceSystem_HostAddress}}/api/products
+Content-Type: application/json
+
+{
+    "name": "IKEA glass bottle",
+    "category": "Home furniture",
+    "unitPrice": 1200,
+    "isHazardous": true,
+    "isDiscountEligible": true
+}
