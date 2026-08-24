@@ -106,5 +106,19 @@ Content-Type: application/json
     ]
 }
 
+### Create order - No.3
+POST {{InvoiceSystem_HostAddress}}/api/orders
+Content-Type: application/json
+
+{
+    "customerId": 2,
+    "items":[
+        {
+            "productId": 3,
+            "quantity": 3
+        }
+    ]
+}
+
 ### Generate invoice for order 2
 GET {{InvoiceSystem_HostAddress}}/api/orders/2/invoice
