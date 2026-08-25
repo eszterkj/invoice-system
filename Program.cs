@@ -10,8 +10,20 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<DBContext>(options => options.UseSqlite("Data Source=invoice.db"));
 builder.Services.AddControllers();
 builder.Services.AddScoped<InvoiceService>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Frontend", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
+
+app.UseCors("Frontend");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
