@@ -1,0 +1,93 @@
+<form [formGroup]="orderForm" (ngSubmit)="createOrder()">
+  <div *ngIf="customers$ | async as customers">
+    <label>Customer</label>
+
+    <select formControlName="customerId">
+      <option [ngValue]="null">Select customer</option>
+
+      <option *ngFor="let customer of customers" [ngValue]="customer.id">
+        {{ customer.name }} - {{ customer.country }}
+      </option>
+    </select>
+  </div>
+
+  <div formArrayName="items" *ngIf="products$ | async as products">
+    <div *ngFor="let item of items.controls; let i = index" [formGroupName]="i">
+      <select formControlName="productId">
+        <option [ngValue]="null">Select product</option>
+
+        <option *ngFor="let product of products" [ngValue]="product.id">
+          {{ product.name }} - {{ product.unitPrice }} Ft
+          {{ product.isHazardous ? '⚠ Hazardous' : '' }}
+          {{ product.isDiscountEligible ? '★ Discount' : '' }}
+        </option>
+      </select>
+
+      <input type="number" formControlName="quantity" min="1" />
+
+      <button type="button" (click)="removeItem(i)">Remove</button>
+    </div>
+  </div>
+
+  <button type="button" (click)="addItem()">Add product</button>
+
+  <button type="submit" [disabled]="orderForm.invalid">Create order</button>
+</form>
+
+<div>
+  <div class="list-buttons">
+    <button type="button" (click)="listCustomers()">Customers</button>
+    <button type="button" (click)="listProducts()">Products</button>
+    <button type="button" (click)="listOrders()">Orders</button>
+  </div>
+
+  <div class="list-card" *ngIf="showCustomers && (customers$ | async) as customers">
+    <h2>Customers</h2>
+
+    <div *ngFor="let customer of customers">
+      <strong>{{ customer.name }}</strong>
+      <span>{{ customer.country }} - {{ customer.address }}</span>
+    </div>
+  </div>
+
+  <div class="list-card" *ngIf="showProducts && (products$ | async) as products">
+    <h2>Products</h2>
+
+    <div *ngFor="let product of products">
+      <strong>{{ product.name }}</strong>
+
+      <span>
+        {{ product.category }} - {{ product.unitPrice }} Ft
+
+        {{ product.isHazardous ? '⚠ Hazardous' : '' }}
+        {{ product.isDiscountEligible ? '★ Discount' : '' }}
+      </span>
+    </div>
+  </div>
+
+  <div class="list-card" *ngIf="showOrders && (orders$ | async) as orders">
+    <h2>Orders</h2>
+
+    <div *ngFor="let order of orders">
+      <strong>Order #{{ order.id }}</strong>
+
+      <span> Customer: {{ order.customer?.name }} · Total: {{ order.total }} Ft </span>
+    </div>
+  </div>
+
+  <div class="invoice-section" *ngIf="orders$ | async as orders">
+    <h2>Invoice</h2>
+
+    <select [(ngModel)]="selectedOrderId">
+      <option [ngValue]="null">Select order</option>
+
+      <option *ngFor="let order of orders" [ngValue]="order.id">
+        Order #{{ order.id }} - {{ order.customer?.name }}
+      </option>
+    </select>
+
+    <button type="button" (click)="getInvoice()" [disabled]="selectedOrderId === null">
+      View invoice
+    </button>
+  </div>
+</div>
